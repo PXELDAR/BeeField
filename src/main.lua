@@ -50,14 +50,19 @@ function love.update(dt)
     _world:update(dt)
     _gameMap:update(dt)
     playerUpdate(dt)
+
+    local playerX, playerY = _player:getPosition()
+    _camera:lookAt(playerX, love.graphics.getHeight() / 2)
 end
 
 -----------------------------------------------------------------------------------
 
 function love.draw()
-    _gameMap:drawLayer(_gameMap.layers["platformTile"])
-    _world:draw()
-    drawPlayer()
+    _camera:attach()
+        _gameMap:drawLayer(_gameMap.layers["platformTile"])
+        _world:draw()
+        drawPlayer()
+    _camera:detach()
 end
 
 -----------------------------------------------------------------------------------
