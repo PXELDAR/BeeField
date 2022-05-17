@@ -5,6 +5,9 @@ function love.load()
 
     _anim8 = require "libraries/anim8/anim8"
     _sti = require "libraries/SimpleTiledImplementation/sti"  
+    _cameraFile = require "libraries/hump/camera"
+
+    _camera = _cameraFile()
     
     _sprites = {}
     _sprites.playerSheet = love.graphics.newImage("assets/playerSheet.png")
