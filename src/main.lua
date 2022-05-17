@@ -28,10 +28,10 @@ function love.load()
     _world:addCollisionClass(_colliderKeys.player --[[, {ignores = {"Platform"}}]])
     _world:addCollisionClass(_colliderKeys.danger)
 
-    _player = _world:newRectangleCollider(360, 100, 80, 80, { collision_class = _colliderKeys.player })
+    _player = _world:newRectangleCollider(360, 100, 40, 100, { collision_class = _colliderKeys.player })
     _player:setFixedRotation(true)
     _player.speed = 240
-    _player.animation = _animations.run
+    _player.animation = _animations.idle
     
     _platform = _world:newRectangleCollider(250, 400, 300, 100, { collision_class = _colliderKeys.platform })
     _platform:setType("static")
@@ -62,7 +62,9 @@ end
 
 function love.draw()
     _world:draw()
-    _player.animation:draw(_sprites.playerSheet, 0, 0)
+
+    local playerX, playerY = _player:getPosition()
+    _player.animation:draw(_sprites.playerSheet, playerX, playerY, nil, 0.25, nil, 130, 300)
 end
 
 -----------------------------------------------------------------------------------
@@ -97,10 +99,10 @@ end
 
 function love.keypressed(key)
     if (key ==_controls.up) then
-        local colliders = _world:queryRectangleArea(_player:getX() - 40, _player:getY() + 40, 80, 5, { _colliderKeys.platform })
+        local colliders = _world:queryRectangleArea(_player:getX() - 20, _player:getY() + 50, 40, 5, { _colliderKeys.platform })
         
         if (#colliders > 0) then
-            _player:applyLinearImpulse(0, -7000)
+            _player:applyLinearImpulse(0, -4000)
         end
     end
 end
