@@ -8,6 +8,12 @@ _player.isMoving = false
 _player.grounded = true
 _player.direction = 1
 
+_controls = {}
+_controls.up = "w"
+_controls.down = "s"
+_controls.left = "a"
+_controls.right = "d"
+
 -----------------------------------------------------------------------------------
 
 function playerUpdate(dt)
