@@ -16,7 +16,7 @@ _controls.right = "d"
 
 -----------------------------------------------------------------------------------
 
-function playerUpdate(dt)
+function updatePlayer(dt)
     if (_player.body) then
         checkIfGrounded()
         movePlayer(dt)
