@@ -1,7 +1,10 @@
 -----------------------------------------------------------------------------------
 
 function love.load()
+    love.window.setMode(1000, 768)
+
     _anim8 = require "libraries/anim8/anim8"
+    _sti = require "libraries/SimpleTiledImplementation/sti"    
 
     _sprites = {}
     _sprites.playerSheet = love.graphics.newImage("assets/playerSheet.png")
@@ -41,21 +44,30 @@ function love.load()
     _controls.down = "s"
     _controls.left = "a"
     _controls.right = "d"
+
+    loadMap()
 end
 
 -----------------------------------------------------------------------------------
 
 function love.update(dt)
     _world:update(dt)
+    _gameMap:update(dt)
     playerUpdate(dt)
 end
 
 -----------------------------------------------------------------------------------
 
 function love.draw()
+    _gameMap:drawLayer(_gameMap.layers["platformLayer"])
     _world:draw()
     drawPlayer()
 end
 
 -----------------------------------------------------------------------------------
 
+function loadMap()
+    _gameMap = _sti("maps/levelOne.lua")
+end
+
+-----------------------------------------------------------------------------------
