@@ -33,6 +33,7 @@ function love.load()
     _player.speed = 240
     _player.animation = _animations.idle
     _player.isMoving = false
+    _player.grounded = true
     _player.direction = 1
 
     _platform = _world:newRectangleCollider(250, 400, 300, 100, { collision_class = _colliderKeys.platform })
@@ -54,6 +55,7 @@ function love.update(dt)
     _world:update(dt)
 
     if (_player.body) then
+        checkIfGrounded()
         movePlayer(dt)
         checkAnimationState()
         animatePlayer(dt)
@@ -66,8 +68,10 @@ end
 function love.draw()
     _world:draw()
 
-    local playerX, playerY = _player:getPosition()
-    _player.animation:draw(_sprites.playerSheet, playerX, playerY, nil, 0.25 * _player.direction , 0.25, 130, 300)
+    if(_player.body) then
+        local playerX, playerY = _player:getPosition()
+        _player.animation:draw(_sprites.playerSheet, playerX, playerY, nil, 0.25 * _player.direction , 0.25, 130, 300)
+    end
 end
 
 -----------------------------------------------------------------------------------
@@ -100,10 +104,14 @@ end
 -----------------------------------------------------------------------------------
 
 function checkAnimationState()
-    if(_player.isMoving) then
-        _player.animation = _animations.run
+    if (_player.grounded) then
+        if(_player.isMoving) then
+            _player.animation = _animations.run
+        else
+            _player.animation = _animations.idle
+        end
     else
-        _player.animation = _animations.idle
+        _player.animation = _animations.jump
     end
 end
 
@@ -117,12 +125,18 @@ end
 
 function love.keypressed(key)
     if (key ==_controls.up) then
-        local colliders = _world:queryRectangleArea(_player:getX() - 20, _player:getY() + 50, 40, 5, { _colliderKeys.platform })
-        
-        if (#colliders > 0) then
+        if (_player.grounded) then
             _player:applyLinearImpulse(0, -4000)
         end
     end
 end
 
 -----------------------------------------------------------------------------------
+
+function checkIfGrounded()
+    local colliders = _world:queryRectangleArea(_player:getX() - 20, _player:getY() + 50, 40, 5, { _colliderKeys.platform })
+    _player.grounded = #colliders > 0
+end
+
+-----------------------------------------------------------------------------------
+
