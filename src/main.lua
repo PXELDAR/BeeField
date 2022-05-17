@@ -3,6 +3,7 @@
 function love.load()
     _windField = require "library/windfield"
     _world = _windField.newWorld(0, 800, false)
+    _world:setQueryDebugDrawing(true)
 
     _colliderKeys = {}
     _colliderKeys.platform = "Platform"
@@ -71,8 +72,12 @@ end
 -----------------------------------------------------------------------------------
 
 function love.keypressed(key)
-    if(key ==_controls.up) then
-        _player:applyLinearImpulse(0, -5000)
+    if (key ==_controls.up) then
+        local colliders = _world:queryRectangleArea(_player:getX() - 40, _player:getY() + 40, 80, 5, { _colliderKeys.platform })
+        
+        if (#colliders > 0) then
+            _player:applyLinearImpulse(0, -7000)
+        end
     end
 end
 
