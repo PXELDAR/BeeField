@@ -4,8 +4,8 @@ function love.load()
     love.window.setMode(1000, 768)
 
     _anim8 = require "libraries/anim8/anim8"
-    _sti = require "libraries/SimpleTiledImplementation/sti"    
-
+    _sti = require "libraries/SimpleTiledImplementation/sti"  
+    
     _sprites = {}
     _sprites.playerSheet = love.graphics.newImage("assets/playerSheet.png")
 
