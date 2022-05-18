@@ -1,6 +1,9 @@
 -----------------------------------------------------------------------------------
 
-_player = _world:newRectangleCollider(360, 100, 40, 100, { collision_class = _colliderKeys.player })
+_playerStartX = 360
+_playerStartY = 100
+
+_player = _world:newRectangleCollider(_playerStartX, _playerStartY, 40, 100, { collision_class = _colliderKeys.player })
 _player:setFixedRotation(true)
 _player.speed = 240
 _player.animation = _animations.idle
@@ -85,7 +88,7 @@ end
 
 function checkPlayerCollision()
     if _player:enter((_colliderKeys.danger)) then
-        _player:destroy()
+        _player:setPosition(_playerStartX, _playerStartY)
     end
 end
 
@@ -95,11 +98,9 @@ function love.keypressed(key)
     if (key ==_controls.up) then
         if (_player.grounded) then
             _player:applyLinearImpulse(0, -4000)
+            _sounds.jump:play()
         end
     end
 end
-
------------------------------------------------------------------------------------
-
 
 -----------------------------------------------------------------------------------
